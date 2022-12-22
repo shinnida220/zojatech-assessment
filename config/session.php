@@ -198,4 +198,17 @@ return [
 
     'same_site' => 'lax',
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | API token lifetime in seconds
+    |--------------------------------------------------------------------------
+    | Currently set to 2 mins
+    |
+    | Supported: "lax", "strict", "none", null
+    |
+    */
+
+    'api_token_timeout' => 120,
+
 ];
