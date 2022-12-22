@@ -1,0 +1,40 @@
+1. Install Laravel
+2. Review requirements
+3. Setup tests and run it - it should fail
+4. Write code to make the test pass
+5. Rerun the test, refactor the code
+
+
+BREAKDOWN
+---------------
+Highlighted below is a snippet of user story, you are required to build an API that meets both the functional and non-functional requirements.
+
+1. As a user:
+    i. I should be able to create an account, verify my email via OTP and gain access to the system
+    ii. I should own a virtual wallet upon account creation.
+
+    iii. I should be able to withdraw from my wallet.
+    iv. I should be logged out after 2 mins of inactivity
+
+    v. I should get notified when an administrative action is taken on my account
+
+As an admin user:
+i.  I should be able to invite other users individually via email
+ii. Bulk upload users email and invite en-mass
+iii. I should be able to manage other users account( perform administrative actions such as: Suspend, new Role Assignment).
+iv. I should be able to fund users wallet
+v. I should be notified on withdrawal attempt/request
+
+
+Expected language is PHP(Laravel) Please ensure your code is tested and code coverage is at a minimum of 80%.
+
+PS: assume you are building a live application, take all necessary security measures.
+
+
+You are expected to create a public github repository and share link to the repository or submit the project zipped file (maintaining your git log). Please document via swagger or share a postman collection link.
+
+Submission is due at 6pm 17/12/2022.
+If you have any questions or require clarity, feel free to reach out to oohidoa@zojatech.com
+Best of luck!
+
+ 
