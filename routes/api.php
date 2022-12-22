@@ -14,6 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['cors', 'json.response']], function () {
+
+    Route::prefix('admin')->group(function () {
+        Route::name('admin.')->middleware('auth:sanctum')->group(function () {
+            Route::get('/users', function () {
+                // Route assigned name "admin.users"...
+            })->name('users');
+        });
+    });
+
+
+    Route::name('user.')->group(function () {
+        Route::get('/users', function () {
+            return $request->user();
+        })->name('users');
+    });
 });
