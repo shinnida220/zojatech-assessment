@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Route;
 
 class AuthController extends Controller
 {
@@ -128,7 +129,7 @@ class AuthController extends Controller
     }
 
     /**
-     * sign in
+     * user sign in
      */
     public function signin(Request $request) {
         // Setup the validator
@@ -146,39 +147,60 @@ class AuthController extends Controller
         }
 
         try {
-            $user = User::with('wallet')->where('email', $request->email)->first();
+            $routeName = Route::currentRouteName();
+            $user = null;
+            if ($routeName === 'admin.signin') {
+                $user = User::where(['email' => $request->email, 'user_type' => 'admin'])->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Login failed. Incorrect email/password combination'
-                ], 401);
+                if (!$user || !Hash::check($request->password, $user->password)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Login failed. Incorrect email/password combination',
+                    ], 401);
+                }
+
+                DB::beginTransaction();
+                // First invalidate all other tokens
+                $user->tokens()->delete();
+                // Create user token
+                $token = $user->createToken('apiToken', ['admin'])->plainTextToken;
+
+                // Finalize
+                DB::commit();
+            } else {
+                $user = User::with('wallet')->where('email', $request->email)->first();
+
+                if (!$user || !Hash::check($request->password, $user->password)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Login failed. Incorrect email/password combination'
+                    ], 401);
+                }
+
+                // Check for verification
+                if (!$user->isVerified()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Login failed. Please verify your email to proceed.'
+                    ], 401);
+                }
+
+                DB::beginTransaction();
+                // First invalidate all other tokens
+                $user->tokens()->delete();
+                // Create user token
+                $token = $user->createToken('apiToken', ['user'])->plainTextToken;
+                // Finalize
+                DB::commit();
             }
-
-            // Check for verification
-            if (!$user->isVerified()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Login failed. Please verify your email to proceed.'
-                ], 401);
-            }
-
-            DB::beginTransaction();
-            // First invalidate all other tokens
-            $user->tokens()->delete();
-
-            // Create user token
-            $token = $user->createToken('apiToken', ['user'])->plainTextToken;
-
-            // Finalize
-            DB::commit();
-
-            // Returb response
+            
+            // Return response
             return response()->json([
                 'status' => true,
                 'message' => 'Login successful',
                 'data' => compact('token','user')
             ], 200);
+
         } catch( \Exception $e) {
             Log::error("Login error: " . $e);
             DB::rollBack();

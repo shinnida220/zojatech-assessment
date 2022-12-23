@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
                     // Token is yet to be used or last_used_at and
                     $accessToken->last_used_at === null || 
                     // last_used_time till now is less than set minutes
-                    now()->diffInMinutes($accessToken->last_used_at) > (config('session.api_token_timeout')/2)
+                    now()->diffInMinutes($accessToken->last_used_at) < config('session.api_token_timeout')
                 );
             }
         );

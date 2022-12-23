@@ -18,10 +18,13 @@ use App\Http\Controllers\AuthController;
 Route::group(['middleware' => ['cors', 'json.response']], function () {
 
     Route::prefix('admin')->group(function () {
-        Route::name('admin.')->middleware('auth:sanctum')->group(function () {
-            Route::get('/users', function () {
-                // Route assigned name "admin.users"...
-            })->name('users');
+        Route::name('admin.')->group(function () {
+            Route::post('/login', [AuthController::class, 'signin'])->name('signin');
+            
+            Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
+                // ', [AuthController::class, 'signin'])->name('signin');
+            });
+
         });
     });
 

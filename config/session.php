@@ -201,7 +201,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | API token lifetime in seconds
+    | API token lifetime in minutes
     |--------------------------------------------------------------------------
     | Currently set to 2 mins
     |
@@ -209,6 +209,6 @@ return [
     |
     */
 
-    'api_token_timeout' => 120,
+    'api_token_timeout' => 2,
 
 ];
