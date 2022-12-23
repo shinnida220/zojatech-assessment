@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'user_type',
+        'verification_code'
     ];
 
     /**
@@ -42,4 +43,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * generateCode - 
+     * @param mixed $length
+     * @return string with random letters of length $length
+     */
+    public function generateCode($length = 12)
+    {
+        $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+        return strtoupper(substr(str_shuffle($permitted_chars), 0, $length));
+    }
 }

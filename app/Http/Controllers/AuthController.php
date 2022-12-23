@@ -44,6 +44,7 @@ class AuthController extends Controller
             $payload = $request->only('name', 'email');
             $payload['password'] = Hash::make($request->password);
             $payload['user_type'] = 'user';
+            $payload['verification_code'] = (new User)->generateCode(6);
 
             // Create the user
             User::create($payload);

@@ -9,6 +9,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+use App\Models\User;
+use App\Notifications\UserRegistered;
+
+use Illuminate\Support\Facades\Notification;
+
 class UserRegistrationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -35,6 +40,6 @@ class UserRegistrationJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+        Notification::send($this->user, new UserRegistered($this->user));
     }
 }

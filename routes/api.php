@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +27,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
 
     Route::name('user.')->group(function () {
-        Route::get('/users', function () {
-            return $request->user();
-        })->name('users');
+        Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
+        Route::get('/login', [AuthController::class, 'signin'])->name('signin');
     });
 });

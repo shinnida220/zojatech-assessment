@@ -20,7 +20,7 @@ class UserRegistered extends Notification
      *
      * @return void
      */
-    public function __construct(User $user);
+    public function __construct(User $user)
     {
         $this->user = $user;
         $this->afterCommit();
@@ -46,8 +46,10 @@ class UserRegistered extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Welcome to '. config('app.name'))
+            ->greeting('Hello '. $this->user->name.',')
             ->line('Thank you for registering on '. config('app.name'). ' To verify your email, please use the code below on the next screen.')
-            ->action($user->verification_code, url('#'))
+            ->action($this->user->verification_code, url('#'))
             ->line('Thank you for using our application!');
     }
 
