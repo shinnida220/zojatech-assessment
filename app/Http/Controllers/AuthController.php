@@ -59,12 +59,134 @@ class AuthController extends Controller
             ], 200);
 
         } catch (\Exception $e) {
-
             Log::error("Sign-up Error: " . $e);
             DB::rollBack();
 
             //api response
             return response()->json(['status' => false, 'message' => 'An unexpected error has occured. Please try again later.'], 500);
+        }
+    }
+
+    /**
+     * Verify new user email
+     */
+    public function verifyEmail(Request $request) {
+        // Setup the validator
+        $validator = Validator::make($request->all(), [
+            "email_verification_code" => "required|string|max:6|min:6",
+        ]);
+
+        // Check if we have validation errors and return necessary error message
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please enter a valid OTP. The OTP is the six (6) alphanumeric code you received when you signed up.'
+            ], 400);
+        }
+
+        try {
+            // Lets find the user.
+            $user = User::where(['verification_code' => $request->email_verification_code])->first();
+            
+            if (!$user) {
+                // set and return response
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You have entered an invalid OTP. Please check and try again.'
+                ], 404);
+            } else if(!empty($user->email_verified_at)){
+                // set and return response
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Your email is already veorifed.'
+                ], 200);
+            } else {
+                // Lets update the account
+                DB::beginTransaction();
+
+                $user->email_verified_at = now();
+                $user->verification_code = null;
+                $user->save();
+
+                // Finalize the operation
+                DB::commit();
+
+                // set and return response
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Your email address was successfully verified. Please proceed to login.'
+                ], 200);
+            }
+        } catch (\Exception $e) {
+
+            Log::error("Email verifiaction error: " . $e);
+            DB::rollBack();
+
+            //api response
+            return response()->json(['status' => false, 'message' => 'An unexpected error has occured. Please try again later.'], 500);
+        }
+    }
+
+    /**
+     * sign in
+     */
+    public function signin(Request $request) {
+        // Setup the validator
+        $validator = Validator::make($request->all(), [
+            "email" => "bail|required|email",
+            'password' => 'required',
+        ]);
+
+        // Check if we have validation errors and return necessary error message
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please ensure your email and password are entered and try again',
+            ], 400);
+        }
+
+        try {
+            $user = User::with('wallet')->where('email', $request->email)->first();
+
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Login failed. Incorrect email/password combination'
+                ], 401);
+            }
+
+            // Check for verification
+            if (!$user->isVerified()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Login failed. Please verify your email to proceed.'
+                ], 401);
+            }
+
+            DB::beginTransaction();
+            // First invalidate all other tokens
+            $user->tokens()->delete();
+
+            // Create user token
+            $token = $user->createToken('apiToken', ['user'])->plainTextToken;
+
+            // Finalize
+            DB::commit();
+
+            // Returb response
+            return response()->json([
+                'status' => true,
+                'message' => 'Login successful',
+                'data' => compact('token','user')
+            ], 200);
+        } catch( \Exception $e) {
+            Log::error("Login error: " . $e);
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'An unexpected error has occured, please try again.',
+            ], 500);
         }
     }
 }

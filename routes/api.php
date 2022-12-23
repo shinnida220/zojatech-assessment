@@ -27,7 +27,8 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
 
     Route::name('user.')->group(function () {
-        Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
-        Route::get('/login', [AuthController::class, 'signin'])->name('signin');
+        Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
+        Route::post('/login', [AuthController::class, 'signin'])->name('signin');
+        Route::post('/email/verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
     });
 });

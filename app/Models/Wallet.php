@@ -21,10 +21,27 @@ class Wallet extends Model
     ];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'history',
+    ];
+
+    /**
      * The attributes that should be cast.
      * @var array<string, string>
      */
     protected $casts = [
         'history' => 'array',
     ];
+
+    /**
+     * Get the user that owns the wallet.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

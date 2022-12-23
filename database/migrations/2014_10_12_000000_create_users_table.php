@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('user_type', ['user', 'admin'])->default('user');
-            $table->string('verification_code', 32)->nullable();
+            $table->string('verification_code', 32)->nullable()->index();
             $table->rememberToken();
             $table->timestamps();
         });

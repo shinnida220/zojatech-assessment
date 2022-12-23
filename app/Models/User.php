@@ -54,4 +54,16 @@ class User extends Authenticatable
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
         return strtoupper(substr(str_shuffle($permitted_chars), 0, $length));
     }
+
+    public function isVerified(){
+        return $this->email_verified_at !== null;
+    }
+
+    /**
+     * Get the wallet associated with this user.
+     */
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
 }
