@@ -28,14 +28,11 @@ class AuthController extends Controller
 
         // Check if we have validation errors and return necessary error message
         if ($validator->fails()) {
-
-            $response = [
+            return response()->json([
                 'status' => false,
                 'message' => 'Data validation failed',
                 'errors' => $validator->errors()->all()
-            ];
-
-            return response()->json($response, 400);
+            ], 400);
         }
 
         try {

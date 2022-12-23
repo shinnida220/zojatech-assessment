@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,9 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
         Route::post('/login', [AuthController::class, 'signin'])->name('signin');
         Route::post('/email/verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
+
+        Route::middleware(['auth:sanctum', 'ability:user'])->group(function () {
+            Route::post('wallet/withdraw', [WalletController::class, 'withdraw'])->name('wallet.withdraw');
+        });
     });
 });
