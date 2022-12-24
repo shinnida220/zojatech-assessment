@@ -23,7 +23,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
             Route::post('/login', [AuthController::class, 'signin'])->name('signin');
             
             Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
-                // ', [AuthController::class, 'signin'])->name('signin');
+                Route::post('wallet/fund', [WalletController::class, 'fund'])->name('wallet.fund');
             });
 
         });
