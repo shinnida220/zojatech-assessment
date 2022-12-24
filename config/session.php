@@ -209,6 +209,6 @@ return [
     |
     */
 
-    'api_token_timeout' => 2,
+    'api_token_timeout' => 10,
 
 ];
