@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Wallet;
 
+use Notification;
+use App\Notifications\AppNotification;
+
 class WalletController extends Controller
 {
     /**
@@ -34,7 +37,7 @@ class WalletController extends Controller
             DB::beginTransaction();
             
             // Use a lock for update..
-            $wallet = Wallet::where('user_id', $request->user()->id)
+            $wallet = Wallet::with('user')->where('user_id', $request->user()->id)
                 ->lockForUpdate() // We don't want any update on this by any other process untill we are done
                 ->first();
 
@@ -85,6 +88,13 @@ class WalletController extends Controller
                     $wallet->refresh();
 
                     if ($wallet->balance === ($currentBalance - $request->amount)) {
+                        // Notify admin
+                        $message = "This is to notify you that a wallet waithdrawal request of ".number_format($request->amount, 2, '.', ',') ." completed successfully on the account with email - ".$wallet->user->email;
+                        $subject = "Account Update Notification";
+                        Notification::route('mail', config('mail.from.address'))->notify(
+                            new AppNotification($message, $subject)
+                        );
+
                         DB::commit();
 
                         return response()->json([
@@ -211,6 +221,13 @@ class WalletController extends Controller
                 $wallet->refresh();
 
                 if ($wallet->balance === ($currentBalance + $request->amount)) {
+                    // Notify user
+                    $message = 'This is to notify you that your wallet has been funded.';
+                    $subject = "Account Update Notification";
+                    Notification::route('mail', $wallet->user->email)->notify(
+                        new AppNotification($message, $subject)
+                    );
+
                     DB::commit();
 
                     return response()->json([
@@ -232,7 +249,7 @@ class WalletController extends Controller
                     // api response
                     return response()->json([
                         'status' => false, 
-                        'message' => 'Wallet funding service is unavilable at the moment. Please try again later.'
+                        'message' => 'No Wallet! Wallet funding service is unavilable at the moment. Please try again later.'
                     ], 403);
                 }
                 
@@ -243,7 +260,7 @@ class WalletController extends Controller
                 // api response
                 return response()->json([
                     'status' => false, 
-                    'message' => 'Wallet funding service is unavilable at the moment. Please try again later.'
+                    'message' => 'Wallet funding service is unavailable at the moment. Please try again later.'
                 ], 403);
             }
         } catch (\Exception $e){

@@ -6,23 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
-use App\Models\User;
 
-class UserRegistered extends Notification implements ShouldQueue
+class AppNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private $user;
-
+    private $message;
+    private $subject;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(string $message, string $subject)
     {
-        $this->user = $user;
+        $this->message = $message;
+        $this->subject = $subject;
         $this->afterCommit();
     }
 
@@ -46,11 +45,9 @@ class UserRegistered extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Welcome to '. config('app.name'))
-            ->greeting('Hello '. $this->user->name.',')
-            ->line('Thank you for registering on '. config('app.name'). ' To verify your email, please use the code below on the next screen.')
-            ->action($this->user->verification_code, url('#'))
-            ->line('Thank you for using our application!');
+            ->greeting($this->subject)
+            ->greeting('Hi there,')
+            ->line($this->message);
     }
 
     /**

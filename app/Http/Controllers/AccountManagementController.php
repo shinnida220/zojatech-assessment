@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Notification;
+use App\Notifications\AppNotification;
 
 class AccountManagementController extends Controller
 {
@@ -42,6 +44,13 @@ class AccountManagementController extends Controller
 
                 // Logout the user from our system
                 $user->tokens()->delete();
+
+                // Notify user
+                $message = 'This is to notify you that your account has been suspended';
+                $subject = "Account Update Notification";
+                Notification::route('mail', $user->email)->notify(
+                    new AppNotification($message, $subject)
+                );
 
                 DB::commit();
 
@@ -97,6 +106,13 @@ class AccountManagementController extends Controller
                 $user->is_active = 1;
                 $user->save();
 
+                // Notify user
+                $message = 'This is to notify you that the ban on your account has been removed.';
+                $subject = "Account Update Notification";
+                Notification::route('mail', $user->email)->notify(
+                    new AppNotification($message, $subject)
+                );
+
                 DB::commit();
 
                 return response()->json([
@@ -151,6 +167,13 @@ class AccountManagementController extends Controller
                 $user->user_type = 'admin';
                 $user->save();
 
+                // Notify user
+                $message = 'This is to notify you that your account role has changed from  Regular to Admin.';
+                $subject = "Account Update Notification";
+                Notification::route('mail', $user->email)->notify(
+                    new AppNotification($message, $subject)
+                );
+
                 DB::commit();
 
                 return response()->json([
@@ -204,6 +227,13 @@ class AccountManagementController extends Controller
             if ($user) {
                 $user->user_type = 'user';
                 $user->save();
+
+                // Notify user
+                $message = 'This is to notify you that your account role has changed from Admin to Regular.';
+                $subject = "Account Update Notification";
+                Notification::route('mail', $user->email)->notify(
+                    new AppNotification($message, $subject)
+                );
 
                 DB::commit();
 

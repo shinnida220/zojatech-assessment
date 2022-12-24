@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Jobs\UserRegistrationJob;
+use Illuminate\Support\Facades\Log;
 
 class UserObserver
 {
@@ -42,7 +43,11 @@ class UserObserver
      */
     public function updated(User $user)
     {
-        //
+    }
+
+    // Best place to capture updates..
+    public function updating(User $user){
+        Log::debug($user->isDirty('is_active').'---====----'.$user->getRawOriginal('is_active').$user->is_active. '--==--'.$user->getOriginal('is_active'));
     }
 
     /**
