@@ -45,7 +45,7 @@ class WalletController extends Controller
 
                 if ($wallet->balance >= $request->amount) {
                     $wallet->balance -= $request->amount;
-                    $history = $oldHistry = $wallet->history;
+                    $history = $wallet->history;
 
                     // Generate the transaction record
                     $transaction = [
@@ -76,7 +76,6 @@ class WalletController extends Controller
                             'status' => true,
                             'message' => 'Your withdrawal of '.number_format($request->amount, 2, '.', ',').' was successful',
                             'data' => [
-                                'old' => $oldHistry,
                                 'wallet' => [ 'balance' => $wallet->balance ]
                             ]
                         ], 200);
