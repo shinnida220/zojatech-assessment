@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 class AuthController extends Controller
 {
 
+    /** profile */
+    public function profile() {
+        return response()->json([
+            'status' => true,
+            'message' => 'Profile information retrieved successfully',
+            'data' => [
+                'user' => auth()->user()
+            ]
+        ], 200);
+    }
+
     /**
      * Signup method for regular user.
      */
@@ -96,7 +107,7 @@ class AuthController extends Controller
                 // set and return response
                 return response()->json([
                     'status' => true,
-                    'message' => 'Your email is already veorifed.'
+                    'message' => 'Your email is already verifed.'
                 ], 200);
             } else {
                 // Lets update the account
@@ -220,22 +231,14 @@ class AuthController extends Controller
 
     /** Signout user */
     public function signout(Request $request) {
-        try {
-            DB::beginTransaction();
-            // Invalidate all other tokens
-            $user->tokens()->delete();
-            DB::commit();
+        // Invalidate all other tokens
+        $request->user()->tokens()->delete();
+        DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Logout successful'
-            ], 200);
-        } catch (\Exception $e){
-            DB::rollback();
-            return response()->json([
-                'status' => false,
-                'message' => 'Logout failed. Please try again.'
-            ], 422);
-        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Logout successful'
+        ], 200);
+       
     }
 }

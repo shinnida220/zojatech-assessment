@@ -47,6 +47,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::post('/email/verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
 
         Route::middleware(['auth:sanctum', 'ability:user'])->group(function () {
+            Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
             Route::post('wallet/withdraw', [WalletController::class, 'withdraw'])->name('wallet.withdraw');
         });
     });
