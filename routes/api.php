@@ -49,6 +49,11 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         Route::middleware(['auth:sanctum', 'ability:user'])->group(function () {
             Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
             Route::post('wallet/withdraw', [WalletController::class, 'withdraw'])->name('wallet.withdraw');
+            Route::post('wallet/fund', [WalletController::class, 'fund'])->name('wallet.fund');
+        });
+
+        Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
+            Route::post('wallet/fund-hack', [WalletController::class, 'fund'])->name('wallet.fakefund');
         });
     });
 });

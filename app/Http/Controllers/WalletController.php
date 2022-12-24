@@ -117,7 +117,7 @@ class WalletController extends Controller
                     return response()->json([
                         'status' => false, 
                         'message' => 'Withdrawal failed. Your have insufficient balance.'
-                    ], 422);
+                    ], 403);
                 }
             } else {
                 // No wallet, should not happen but hey - u are here..
