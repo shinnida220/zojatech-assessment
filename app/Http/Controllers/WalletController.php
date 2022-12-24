@@ -40,6 +40,20 @@ class WalletController extends Controller
 
             // This will always return a wallet but lets wrap it aroud a check just in case.
             if ($wallet){
+                // User may have logged in before suspension
+                // Check for active sccount.
+
+                if (!auth()->user()->isActive()) {
+                    // Available balance not enough
+                    DB::rollBack();
+
+                    // api response
+                    return response()->json([
+                        'status' => false, 
+                        'message' => 'Withdrawal failed. Your account is suspended.'
+                    ], 403);
+                }
+
                 // keep the current balance..
                 $currentBalance = $wallet->balance;
 

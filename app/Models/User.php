@@ -59,6 +59,10 @@ class User extends Authenticatable
         return $this->email_verified_at !== null;
     }
 
+    public function isActive() {
+        return abs($this->is_active) === 1;
+    }
+
     /**
      * Get the wallet associated with this user.
      */

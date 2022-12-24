@@ -182,6 +182,15 @@ class AuthController extends Controller
                     ], 401);
                 }
 
+                // Check for suspension
+                // Check for verification
+                if (!$user->isActive()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Login failed. Your account has been suspended.'
+                    ], 401);
+                }
+
                 DB::beginTransaction();
                 // First invalidate all other tokens
                 $user->tokens()->delete();
@@ -206,6 +215,27 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => 'An unexpected error has occured, please try again.',
             ], 500);
+        }
+    }
+
+    /** Signout user */
+    public function signout(Request $request) {
+        try {
+            DB::beginTransaction();
+            // Invalidate all other tokens
+            $user->tokens()->delete();
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Logout successful'
+            ], 200);
+        } catch (\Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' => false,
+                'message' => 'Logout failed. Please try again.'
+            ], 422);
         }
     }
 }
