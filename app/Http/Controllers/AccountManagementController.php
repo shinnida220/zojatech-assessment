@@ -13,7 +13,7 @@ class AccountManagementController extends Controller
     public function users(){
         return response()->json([
             'status' => true,
-            'message' => 'User list retrieved successfully',
+            'message' => 'Users list retrieved successfully',
             'data' => [
                 'users' => User::where('user_type', 'user')->get()
             ]

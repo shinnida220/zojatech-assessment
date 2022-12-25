@@ -27,5 +27,15 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'user_type' => 'admin',
         ]);
+
+        for ($i=1; $i<= 10; $i++) {
+            \App\Models\User::factory()->create([
+                'email' => fake()->unique()->safeEmail(),
+                'password' => Hash::make('password'),
+                'name' => fake()->name(),
+                'email_verified_at' => now(),
+                'user_type' => 'user'
+            ]);
+        }
     }
 }
