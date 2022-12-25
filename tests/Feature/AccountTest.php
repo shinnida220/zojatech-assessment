@@ -10,6 +10,34 @@ use App\Models\User;
 
 class AccountTest extends TestCase
 {
+    public function test_get_all_users(){
+        // admin user
+        $payload = [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => '$2y$10$D2S6V7Mwgpqa5bqxoY5cPOvsULm3Zj5NW9xNtLnY.a.T4pJryts22', // password
+            'user_type' => 'admin',
+            'is_active' => 1
+        ];
+        $user = User::create($payload);
+        $user->createToken('apiToken', ['admin']);
+        $user->save();
+
+        // Act as the newly created user
+        Sanctum::actingAs($user, ['admin']);
+
+        $this->get('/api/admin/users')
+            ->assertOk()
+            ->assertJson([
+                'status' => true,
+                'message' => 'User list retrieved successfully',
+            ])
+            ->assertJsonStructure([
+                'data' => ['users' => ['*' => ['id','user_type']]]
+            ]);;
+    }
+
     public function test_ban(){
         // admin user
         $payload = [

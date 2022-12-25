@@ -8,7 +8,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AccountManagementController extends Controller
-{
+{   
+    /** All user accounts */
+    public function users(){
+        return response()->json([
+            'status' => true,
+            'message' => 'User list retrieved successfully',
+            'data' => [
+                'users' => User::where('user_type', 'user')->get()
+            ]
+        ], 200);
+    }
+
     /** Place a bank on an account */
     public function ban(Request $request) {
         // Setup the validator

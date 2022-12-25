@@ -27,6 +27,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
             
             Route::middleware(['auth:sanctum', 'ability:admin'])->group(function () {
                 Route::post('wallet/fund', [WalletController::class, 'fund'])->name('wallet.fund');
+                Route::get('users', [AccountManagementController::class, 'users'])->name('account.users');
                 
                 Route::put('account/ban', [AccountManagementController::class, 'ban'])->name('account.ban');
                 Route::put('account/unban', [AccountManagementController::class, 'unban'])->name('account.unban');
