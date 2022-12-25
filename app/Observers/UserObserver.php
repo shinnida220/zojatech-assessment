@@ -24,13 +24,15 @@ class UserObserver
      */
     public function created(User $user)
     {
-        // Setup a virtual wallet for the new user
-        Wallet::create([
-            'user_id' => $user->id,
-            'balance' => 0,
-            'history' => []
-        ]);
+        if ($user->user_type === 'user') {
+            // Setup a virtual wallet for the new user
+            Wallet::create([
+                'user_id' => $user->id,
+                'balance' => 0,
+                'history' => []
+            ]);
 
-        UserRegistrationJob::dispatch($user);
+            UserRegistrationJob::dispatch($user);
+        }
     }
 }

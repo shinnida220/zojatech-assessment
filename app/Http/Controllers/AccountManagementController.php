@@ -55,7 +55,7 @@ class AccountManagementController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'The user account you selected no longer exist. Please check and try again.',
-                ], 403);
+                ], 404);
             }
         } catch( \Exception $e) {
             DB::rollBack();
@@ -109,7 +109,7 @@ class AccountManagementController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'The user account you selected no longer exist. Please check and try again.',
-                ], 403);
+                ], 404);
             }
         } catch( \Exception $e) {
             DB::rollBack();
@@ -163,7 +163,7 @@ class AccountManagementController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => 'The user account you selected no longer exist or is not a regular account. Please check and try again.',
-                ], 403);
+                ], 404);
             }
         } catch( \Exception $e) {
             DB::rollBack();
@@ -193,7 +193,7 @@ class AccountManagementController extends Controller
             if (auth()->user()->id == $request->user_id) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'You are not allowed to promote your own account.',
+                    'message' => 'You are not allowed to demote your own account.',
                 ], 403);
             }
 
