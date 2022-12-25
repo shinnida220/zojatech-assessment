@@ -183,7 +183,7 @@ class AuthTest extends TestCase
                 'status' => false,
                 'message' => 'Login failed. Incorrect email/password combination',
             ]);
-        
+
         // inpersonate an admin
         $this->post('/api/admin/login', ['email' => $payload['email'], 'password' => $payload['password']])
             ->assertUnauthorized()

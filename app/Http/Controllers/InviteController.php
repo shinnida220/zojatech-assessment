@@ -50,8 +50,9 @@ class InviteController extends Controller
             $invitees = $request->email;
         }
 
-        try {
-            // Queue up the notification 
+        
+        // Queue up the notification 
+        if (!empty($invitees)) {
             foreach($invitees as $invitee){
                 Notification::route('mail', $invitee)->notify(new InviteUser($request->invite_text));
             }
@@ -63,11 +64,12 @@ class InviteController extends Controller
                     'invitees' => $invitees
                 ]
             ], 200);
-        } catch (\Exception $e) {
+        } else {
             return response()->json([
                 'status' => false,
-                'message' => 'An unexpectee error has occured. Please try again.',
-            ], 400);
+                'message' => 'An unexpected error has occured. Please try again later',
+            ], 500);
         }
+        
     }
 }

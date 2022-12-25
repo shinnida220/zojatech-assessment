@@ -71,11 +71,7 @@ class WalletController extends Controller
                         'created_at' => now()->format('Y-m-d H:i:s')
                     ];
 
-                    if (count($history) > 0){
-                        $history = [$transaction, ...$history];
-                    } else {
-                        $history = [$transaction];
-                    }
+                    $history = (count($history) > 0) ? [$transaction, ...$history]: [$transaction];
 
                     $wallet->history = $history;
                     $wallet->save();
@@ -197,12 +193,7 @@ class WalletController extends Controller
                     'created_at' => now()->format('Y-m-d H:i:s')
                 ];
 
-                if (count($history) > 0){
-                    $history = [$transaction, ...$history];
-                } else {
-                    $history = [$transaction];
-                }
-
+                $history = (count($history) > 0) ? [$transaction, ...$history] : [$transaction];
                 $wallet->history = $history;
                 $wallet->save();
 
