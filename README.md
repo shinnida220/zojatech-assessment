@@ -1,66 +1,53 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About This Application
 
-## About Laravel
+This application is built with Laravel and was written as an assessment based on the requirements below:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Highlighted below is a snippet of user story, you are required to build an API that meets both the functional and non-functional requirements.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. As a user:
+   i. I should be able to create an account, verify my email via OTP and gain access to the system
+   ii. I should own a virtual wallet upon account creation.
+   iii. I should be able to withdraw from my wallet.
+   iv. I should be logged out after 2 mins of inactivity
+   v. I should get notified when an administrative action is taken on my account
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+As an admin user:
+i. I should be able to invite other users individually via email
+ii. Bulk upload users email and invite en-mass
+iii. I should be able to manage other users account( perform administrative actions such as: Suspend, new Role Assignment).
+iv. I should be able to fund users wallet
+v. I should be notified on withdrawal attempt/request
 
-## Learning Laravel
+Expected language is PHP(Laravel) Please ensure your code is tested and code coverage is at a minimum of 80%.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+PS: assume you are building a live application, take all necessary security measures.\*
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The application has been buuilt to handle all of the requirements highlighted above.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+To install this application, please do the following:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   Clone this git repository.
+-   Navigate into the repository folder
+-   Install composer dependencies:
+    `composer install`
+-   Setup your **.env** file. Add your database configuration, mail configuration and your queue configuration
+-   Run the database migration.
+    `php artisan migrate --seed`
+    If you have not created a database before, you will be asked whether to create a new database
+    The database is seeded with 1 admin account and 10 regular accounts
+    The admin account details is ***admin@zojatech.com/Password@123*** . The other users have a default password of **_password_**
+-   Finally run the application using
+    `php artisan serve`
+-   Mail notifications are queued and ran from the background, endeavor to start the queue monitor using
+    `php artisan queue:work`
+-   The default timeout is set to 2 mins.
 
-### Premium Partners
+**_The routes are separated into admin and user route. To view the available routes in details, please use the postman collection in this repository <a href="/Zojatech Assessment.postman_collection.json">Zojatech Assessment.postman_collection.json</a>._**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Issues/Suggestions
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+If you would like to discuss concerns or feedback, please use the issues tab or create a pull request.

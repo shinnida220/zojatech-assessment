@@ -1,0 +1,545 @@
+{
+	"info": {
+		"_postman_id": "72f0abdf-7dee-4386-bac2-82376445bf88",
+		"name": "Zojatech Assessment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2902744"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Authentication",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"John Doe\",\n    \"email\" : \"email@domain.com\",\n    \"password\": \"$$Pass123$\",\n    \"password_confirmation\": \"$$Pass123$\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/signup",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Email",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email_verification_code\": \"H8KQ0O\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/email/verify",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"email",
+										"verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sign In",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"email@domain.com\",\n    \"password\": \"$$Pass123$\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/login",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Wallet",
+					"item": [
+						{
+							"name": "Withdraw",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 4000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/wallet/withdraw",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"wallet",
+										"withdraw"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Authentication",
+					"item": [
+						{
+							"name": "Sign In",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@zojatech.com\",\n    \"password\": \"Password@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/login",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Wallet",
+					"item": [
+						{
+							"name": "Fund",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 12050,\n    \"user_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/wallet/fund",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"wallet",
+										"fund"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Account",
+					"item": [
+						{
+							"name": "Ban",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/account/ban",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"account",
+										"ban"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unban",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/account/unban",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"account",
+										"unban"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Promote",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/account/promote",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"account",
+										"promote"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Demote",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/account/demote",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"account",
+										"demote"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ENTER_TOKEN_VALUE_HERE}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{HOST}}/api/admin/users",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invite Multiple",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "28|JSJbRowspHIZ5QHM3r9fGZqbC5EBOqLAspbzzRFK",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": [\n        \"john.doe@gmail.com\", \"sarah.jones@gmail.com\"\n    ],\n    \"invite_text\" : \"This is you personal invite to join the whitelist of our app.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/invite-multiple",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"invite-multiple"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invite",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "28|JSJbRowspHIZ5QHM3r9fGZqbC5EBOqLAspbzzRFK",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john.doe@gmail.com\",\n    \"invite_text\": \"This is you personal invite to join the whitelist of our app.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/api/admin/invite",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"invite"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ENTER_TOKEN_VALUE_HERE",
+			"value": "{TOKEN_FROM_LOGIN}"
+		},
+		{
+			"key": "HOST",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		}
+	]
+}
